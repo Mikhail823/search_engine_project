@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    username: root
+    password: Root@ru2014
+    url: jdbc:mysql://localhost:3306/n?useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+        ddl-auto: update
+        generate-ddl: true
+    show-sql: true
+
+#  security:
+#    user:
+#      name: admin
+#      password: root
+#      roles: ADMIN, USER
+
+  # логи
+  logging:
+      level:
+        org.hibernate.SQL: info
+
+
+indexing-settings:
+  sites:
+        - url: https://www.lenta.ru
+          name: Лента.ру
+        - url: https://www.dimonvideo.ru
+          name: DimonVideo
+        - url: https://www.playback.ru
+          name: PlayBack.Ru
+
