@@ -18,12 +18,9 @@ import java.util.concurrent.RecursiveTask;
 @Slf4j
 public class PageUrlParser extends RecursiveTask<List<PageDto>> {
     private final String url;
-    private List<String> urlList;
-    private List<PageDto> pageDtoList;
+    private final List<String> urlList;
+    private final List<PageDto> pageDtoList;
 
-//    public PageUrlParser(String url){
-//        this.url = url;
-//    }
     public PageUrlParser(String url, List<PageDto> pageDtoList, List<String> urlList) {
         this.url = url;
         this.pageDtoList = pageDtoList;

@@ -15,13 +15,6 @@ spring:
         ddl-auto: update
         generate-ddl: true
     show-sql: true
-
-#  security:
-#    user:
-#      name: admin
-#      password: root
-#      roles: ADMIN, USER
-
   # логи
   logging:
       level:
