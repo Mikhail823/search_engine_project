@@ -12,9 +12,10 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-        ddl-auto: update
-        generate-ddl: true
-    show-sql: true
+      ddl-auto: update
+      generate-ddl: true
+    #  show-sql: true
+    open-in-view: true
   # логи
   logging:
       level:

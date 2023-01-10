@@ -16,7 +16,6 @@ import searchengine.repository.PageRepository;
 import searchengine.repository.SiteRepository;
 import searchengine.services.IndexingService;
 
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -37,49 +36,35 @@ public class IndexingServiceImpl implements IndexingService {
 
     @Override
     public boolean urlIndexing(String url) {
-        if (urlCheck(url)){
+        if (urlCheck(url)) {
             log.info("Начата переиндексация сайта - " + url);
             executorService = Executors.newFixedThreadPool(processorCoreCount);
-            executorService.submit(new SiteIndexed(pageRepository,
-                    siteRepository,
-                    lemmaRepository,
-                    indexRepository,
-                    lemmaParser,
-                    indexParser,
-                    url,
-                    sitesList));
+            executorService.submit(new SiteIndexed(pageRepository, siteRepository, lemmaRepository, indexRepository, lemmaParser, indexParser, url, sitesList));
             executorService.shutdown();
 
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
     @Override
     public boolean indexingAll() {
-        if (isIndexingActive()){
+        if (isIndexingActive()) {
             log.debug("Индексация уже запущена");
             return false;
         } else {
             List<Site> siteList = sitesList.getSites();
             executorService = Executors.newFixedThreadPool(processorCoreCount);
-            for (Site site : siteList){
+            for (Site site : siteList) {
                 String url = site.getUrl();
                 SiteEntity siteEntity = new SiteEntity();
                 siteEntity.setName(site.getName());
                 log.info("Парсинг сайта: " + site.getName());
-                executorService.submit(new SiteIndexed(pageRepository,
-                        siteRepository,
-                        lemmaRepository,
-                        indexRepository,
-                        lemmaParser,
-                        indexParser,
-                        url,
-                        sitesList));
+                executorService.submit(new SiteIndexed(pageRepository, siteRepository, lemmaRepository, indexRepository, lemmaParser, indexParser, url, sitesList));
             }
             executorService.shutdown();
-            }
+        }
         return true;
     }
 

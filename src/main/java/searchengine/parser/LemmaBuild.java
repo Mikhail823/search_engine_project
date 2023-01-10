@@ -45,6 +45,7 @@ public class LemmaBuild implements LemmaParser {
             lemmaDtoList.add(new LemmaDto(lemma, frequency));
         }
     }
+
     @Override
     public List<LemmaDto> getLemmaDtoList() {
         return lemmaDtoList;

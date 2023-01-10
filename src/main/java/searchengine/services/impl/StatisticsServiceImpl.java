@@ -2,14 +2,11 @@ package searchengine.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import searchengine.config.Site;
-import searchengine.config.SitesList;
 import searchengine.dto.statistics.DetailedStatisticsItem;
 import searchengine.dto.statistics.StatisticsData;
 import searchengine.dto.statistics.StatisticsResponse;
 import searchengine.dto.statistics.TotalStatistics;
-import searchengine.model.LemmaEntity;
-import searchengine.model.PageEntity;
+
 import searchengine.model.SiteEntity;
 import searchengine.model.Status;
 import searchengine.repository.LemmaRepository;
@@ -20,7 +17,6 @@ import searchengine.services.StatisticsService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -48,10 +44,10 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     private List<DetailedStatisticsItem> getDetailedList() {
-        List <SiteEntity> siteList = siteRepository.findAll();
+        List<SiteEntity> siteList = siteRepository.findAll();
         List<DetailedStatisticsItem> result = new ArrayList<>();
-        for (SiteEntity site : siteList){
-           DetailedStatisticsItem item = getDetailed(site);
+        for (SiteEntity site : siteList) {
+            DetailedStatisticsItem item = getDetailed(site);
             result.add(item);
         }
         return result;

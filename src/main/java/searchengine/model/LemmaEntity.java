@@ -4,13 +4,12 @@ package searchengine.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -21,7 +20,7 @@ public class LemmaEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "site_id", referencedColumnName = "id")
     private SiteEntity siteEntityId;
     private String lemma;
@@ -31,9 +30,36 @@ public class LemmaEntity implements Serializable {
     private List<IndexEntity> index = new ArrayList<>();
 
 
-    public LemmaEntity(String lemma, int frequency, SiteEntity siteEntityId){
+    public LemmaEntity(String lemma, int frequency, SiteEntity siteEntityId) {
         this.lemma = lemma;
         this.frequency = frequency;
         this.siteEntityId = siteEntityId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LemmaEntity that = (LemmaEntity) o;
+        return id == that.id && frequency == that.frequency &&
+                siteEntityId.equals(that.siteEntityId) &&
+                lemma.equals(that.lemma) &&
+                index.equals(that.index);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, siteEntityId, lemma, frequency, index);
+    }
+
+    @Override
+    public String toString() {
+        return "LemmaEntity{" +
+                "id=" + id +
+                ", siteEntityId=" + siteEntityId +
+                ", lemma='" + lemma + '\'' +
+                ", frequency=" + frequency +
+                ", index=" + index +
+                '}';
     }
 }

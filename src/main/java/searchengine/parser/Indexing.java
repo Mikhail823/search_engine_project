@@ -19,7 +19,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class Indexing implements IndexParser{
+public class Indexing implements IndexParser {
     private final PageRepository pageRepository;
     private final LemmaRepository lemmaRepository;
     private final Morphology morphology;
@@ -27,7 +27,7 @@ public class Indexing implements IndexParser{
 
     @Override
     public void run(SiteEntity site) {
-        Iterable <PageEntity> pageList =  pageRepository.findBySiteId(site);
+        Iterable<PageEntity> pageList = pageRepository.findBySiteId(site);
         List<LemmaEntity> lemmaList = lemmaRepository.findBySiteEntityId(site);
         indexDtoList = new ArrayList<>();
 

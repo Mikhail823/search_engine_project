@@ -1,6 +1,5 @@
 package searchengine.morphology;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,7 +9,6 @@ import org.apache.lucene.morphology.LuceneMorphology;
 import org.apache.lucene.morphology.russian.RussianLuceneMorphology;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +35,7 @@ public class MorphologyAnalizer implements Morphology {
         content = content.toLowerCase(Locale.ROOT)
                 .replaceAll(regex, " ");
         HashMap<String, Integer> lemmaList = new HashMap<>();
-        String [] elements = content.toLowerCase(Locale.ROOT).split("\\s+");
+        String[] elements = content.toLowerCase(Locale.ROOT).split("\\s+");
         for (String el : elements) {
             List<String> wordsList = getLemma(el);
             for (String word : wordsList) {
@@ -65,7 +63,7 @@ public class MorphologyAnalizer implements Morphology {
     @Override
     public List<Integer> findLemmaIndexInText(String content, String lemma) {
         List<Integer> lemmaIndexList = new ArrayList<>();
-        String [] elements = content.toLowerCase(Locale.ROOT).split("\\p{Punct}|\\s");
+        String[] elements = content.toLowerCase(Locale.ROOT).split("\\p{Punct}|\\s");
         int index = 0;
         for (String el : elements) {
             List<String> lemmas = getLemma(el);

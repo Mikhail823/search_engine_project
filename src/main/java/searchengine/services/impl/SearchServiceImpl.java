@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import searchengine.dto.statistics.SearchDto;
-import searchengine.dto.statistics.response.FalseResponse;
 import searchengine.model.IndexEntity;
 import searchengine.model.LemmaEntity;
 import searchengine.model.PageEntity;
@@ -42,23 +41,22 @@ public class SearchServiceImpl implements SearchService {
         }
         List<SearchDto> searchData = null;
         for (LemmaEntity l : foundLemmaList) {
-                if (l.getLemma().equals(searchText)){
-            searchData = new ArrayList<>(getSearchDtoList(foundLemmaList, textLemmaList, offset, limit));
-            searchData.sort((o1, o2) -> Float.compare(o2.getRelevance(), o1.getRelevance()));
-            if (searchData.size() > limit) {
-                for (int i = offset; i < limit; i++) {
-                    result.add(searchData.get(i));
-                }
-                return result;
-            }
-          }
-                else {
-                    try {
-                        throw new Exception();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
+            if (l.getLemma().equals(searchText)) {
+                searchData = new ArrayList<>(getSearchDtoList(foundLemmaList, textLemmaList, offset, limit));
+                searchData.sort((o1, o2) -> Float.compare(o2.getRelevance(), o1.getRelevance()));
+                if (searchData.size() > limit) {
+                    for (int i = offset; i < limit; i++) {
+                        result.add(searchData.get(i));
                     }
+                    return result;
                 }
+            } else {
+                try {
+                    throw new Exception();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
         log.info("Поисковый запрос обработан. Ответ получен.");
         return searchData;

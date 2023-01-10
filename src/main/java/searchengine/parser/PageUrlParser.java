@@ -41,14 +41,7 @@ public class PageUrlParser extends RecursiveTask<List<PageDto>> {
             List<PageUrlParser> taskList = new ArrayList<>();
             for (Element el : elements) {
                 String link = el.attr("abs:href");
-                if (link.startsWith(el.baseUri()) &&
-                        !link.equals(el.baseUri()) &&
-                        !link.contains("#") &&
-                        !link.contains(".pdf") &&
-                        !link.contains(".jpg") &&
-                        !link.contains(".JPG") &&
-                        !link.contains(".png") &&
-                         !urlList.contains(link)) {
+                if (link.startsWith(el.baseUri()) && !link.equals(el.baseUri()) && !link.contains("#") && !link.contains(".pdf") && !link.contains(".jpg") && !link.contains(".JPG") && !link.contains(".png") && !urlList.contains(link)) {
 
                     urlList.add(link);
                     PageUrlParser task = new PageUrlParser(link, pageDtoList, urlList);
@@ -69,10 +62,7 @@ public class PageUrlParser extends RecursiveTask<List<PageDto>> {
         Document doc = null;
         try {
             Thread.sleep(150);
-            doc = Jsoup.connect(url)
-                    .userAgent(RandomUserAgent.getRandomUserAgent())
-                    .referrer("http://www.google.com")
-                    .get();
+            doc = Jsoup.connect(url).userAgent(RandomUserAgent.getRandomUserAgent()).referrer("http://www.google.com").get();
         } catch (Exception e) {
             log.debug("Не удалось установить подключение с " + url);
         }

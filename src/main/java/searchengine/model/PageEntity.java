@@ -3,13 +3,12 @@ package searchengine.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "page", indexes = {@Index(name = "path_list", columnList = "path")})
@@ -21,7 +20,7 @@ public class PageEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "site_id", referencedColumnName = "id")
     private SiteEntity siteId;
     @Column(length = 1000, columnDefinition = "VARCHAR(515)", nullable = false)
@@ -40,5 +39,34 @@ public class PageEntity implements Serializable {
         this.path = path;
         this.code = code;
         this.content = content;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PageEntity that = (PageEntity) o;
+        return id == that.id && code == that.code &&
+                siteId.equals(that.siteId) &&
+                path.equals(that.path) &&
+                content.equals(that.content) &&
+                index.equals(that.index);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, siteId, path, code, content, index);
+    }
+
+    @Override
+    public String toString() {
+        return "PageEntity{" +
+                "id=" + id +
+                ", siteId=" + siteId +
+                ", path='" + path + '\'' +
+                ", code=" + code +
+                ", content='" + content + '\'' +
+                ", index=" + index +
+                '}';
     }
 }

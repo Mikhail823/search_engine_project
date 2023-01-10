@@ -12,11 +12,10 @@ import searchengine.repository.IndexRepository;
 import searchengine.repository.LemmaRepository;
 import searchengine.repository.PageRepository;
 import searchengine.repository.SiteRepository;
-import searchengine.utils.ClearHtmlCode;
+
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.Vector;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ForkJoinPool;
@@ -46,7 +45,7 @@ public class SiteIndexed implements Runnable {
         saveDateSite();
 
         try {
-            List<PageDto> pageDtoList  = getPageDtoList();
+            List<PageDto> pageDtoList = getPageDtoList();
             saveToBase(pageDtoList);
             getLemmasPage();
             indexingWords();
@@ -67,6 +66,7 @@ public class SiteIndexed implements Runnable {
             return new CopyOnWriteArrayList<>(pages);
         } else throw new InterruptedException();
     }
+
     private void saveToBase(List<PageDto> pages) throws InterruptedException {
         if (!Thread.interrupted()) {
             List<PageEntity> pageList = new CopyOnWriteArrayList<>();
@@ -102,6 +102,7 @@ public class SiteIndexed implements Runnable {
             throw new RuntimeException();
         }
     }
+
     private void indexingWords() throws InterruptedException {
         if (!Thread.interrupted()) {
             SiteEntity site = siteRepository.findByUrl(url);
@@ -126,7 +127,7 @@ public class SiteIndexed implements Runnable {
         }
     }
 
-    private void deleteDataFromSite(){
+    private void deleteDataFromSite() {
         SiteEntity site = siteRepository.findByUrl(url);
         site.setStatus(Status.INDEXING);
         site.setName(getName());
@@ -136,7 +137,7 @@ public class SiteIndexed implements Runnable {
         siteRepository.delete(site);
     }
 
-    private void saveDateSite(){
+    private void saveDateSite() {
         SiteEntity site = new SiteEntity();
         site.setUrl(url);
         site.setName(getName());
@@ -146,7 +147,7 @@ public class SiteIndexed implements Runnable {
         siteRepository.save(site);
     }
 
-    private void errorSite(){
+    private void errorSite() {
         SiteEntity site = new SiteEntity();
         site.setLastError("Индексация остановлена");
         site.setStatus(Status.FAILED);

@@ -9,10 +9,10 @@ import searchengine.exception.ErrorMessage;
 @RestControllerAdvice
 public class ApiErrorController {
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<ErrorMessage> notFoundException(NullPointerException exception) {
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(new ErrorMessage("Данные поискового запроса" +
-                        " отсутствуют в базе сервера: " + exception.getMessage()));
+    public ResponseEntity<ErrorMessage> nullPointerException(NullPointerException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorMessage("Данные поискового запроса" + " отсутствуют в базе сервера: "
+                        + exception.getMessage()));
     }
+
 }

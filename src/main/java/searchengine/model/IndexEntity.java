@@ -3,12 +3,11 @@ package searchengine.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -22,11 +21,11 @@ public class IndexEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "page_id", referencedColumnName = "id")
     private PageEntity page;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lemma_id", referencedColumnName = "id")
     private LemmaEntity lemma;
 
@@ -37,5 +36,29 @@ public class IndexEntity implements Serializable {
         this.page = page;
         this.lemma = lemma;
         this.rank = rank;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        IndexEntity that = (IndexEntity) o;
+        return id == that.id && Float.compare(that.rank, rank) == 0 && page.equals(that.page)
+                && lemma.equals(that.lemma);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, page, lemma, rank);
+    }
+
+    @Override
+    public String toString() {
+        return "IndexEntity{" +
+                "id=" + id +
+                ", page=" + page +
+                ", lemma=" + lemma +
+                ", rank=" + rank +
+                '}';
     }
 }

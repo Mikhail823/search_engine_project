@@ -65,20 +65,14 @@ public class ApiController {
 
     @GetMapping("/search")
     @Operation(summary = "Поиск информации")
-    public ResponseEntity<Object> search
-            (@RequestParam(name = "query", required = false, defaultValue = "") String query,
-             @RequestParam(name = "site", required = false, defaultValue = "") String site,
-             @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
-             @RequestParam(name = "limit", required = false, defaultValue = "20") int limit) {
+    public ResponseEntity<Object> search(@RequestParam(name = "query", required = false, defaultValue = "") String query, @RequestParam(name = "site", required = false, defaultValue = "") String site, @RequestParam(name = "offset", required = false, defaultValue = "0") int offset, @RequestParam(name = "limit", required = false, defaultValue = "20") int limit) {
         if (query.isEmpty()) {
-            return new ResponseEntity<>(new FalseResponse(false, "Задан пустой поисковый запрос"),
-                    HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new FalseResponse(false, "Задан пустой поисковый запрос"), HttpStatus.BAD_REQUEST);
         } else {
             List<SearchDto> searchData;
             if (!site.isEmpty()) {
                 if (siteRepository.findByUrl(site) == null) {
-                    return new ResponseEntity<>(new FalseResponse(false, "Указанная страница не найдена"),
-                            HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>(new FalseResponse(false, "Указанная страница не найдена"), HttpStatus.BAD_REQUEST);
                 } else {
                     searchData = searchService.siteSearch(query, site, offset, limit);
                 }
@@ -87,11 +81,11 @@ public class ApiController {
             }
 
             return new ResponseEntity<>(new SearchResponse(true, searchData.size(), searchData), HttpStatus.OK);
-
         }
     }
 
     @PostMapping("/indexPage")
+
     @Operation(summary = "Индексация отдельной страницы")
     public ResponseEntity<Object> indexPage(@RequestParam(name = "url") String url) {
         if (url.isEmpty()) {
@@ -103,8 +97,7 @@ public class ApiController {
                 return new ResponseEntity<>(new TrueResponse(true), HttpStatus.OK);
             } else {
                 log.info("Указанная страница" + "за пределами конфигурационного файла");
-                return new ResponseEntity<>(new FalseResponse(false, "Указанная страница" +
-                        "за пределами конфигурационного файла"), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new FalseResponse(false, "Указанная страница" + "за пределами конфигурационного файла"), HttpStatus.BAD_REQUEST);
             }
         }
     }
